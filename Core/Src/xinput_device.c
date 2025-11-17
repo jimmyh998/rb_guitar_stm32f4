@@ -10,6 +10,9 @@
 #include "xinput_device.h"
 #include "class/hid/hid.h"
 #include "common/tusb_types.h"
+#include "rb_guitar.h"
+
+uint8_t player = 0;
 
 typedef struct {
     uint8_t bLength; // Length of this descriptor.
@@ -294,8 +297,12 @@ bool xinputd_xfer_cb(uint8_t rhport, uint8_t ep_addr, xfer_result_t result,
     }
     if (ep_addr == p_xinput->ep_out) {
         //hid_set_report(p_xinput->epout_buf, xferred_bytes, 0x00, INTERRUPT_ID);
-        //TU_ASSERT(usbd_edpt_xfer(rhport, p_xinput->ep_out, p_xinput->epout_buf,
-         //                            0x20));
+    	if(p_xinput->epout_buf[0] == XBOX_LED_ID){
+    		uint8_t idx = p_xinput->epout_buf[2];
+    		player = xbox_players[idx];
+    	}
+    	TU_ASSERT(usbd_edpt_xfer(rhport, p_xinput->ep_out, p_xinput->epout_buf,
+                                     0x20));
 
     } else if (ep_addr == p_xinput->ep_in) {
         sending = false;
@@ -304,5 +311,9 @@ bool xinputd_xfer_cb(uint8_t rhport, uint8_t ep_addr, xfer_result_t result,
 }
 
 
+uint8_t playerLedValue(void){
+
+	return player;
+}
 
 #endif

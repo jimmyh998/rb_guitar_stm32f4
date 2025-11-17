@@ -39,6 +39,7 @@
 
 #define XINPUT_DESC_TYPE_RESERVED 0x21
 #define XINPUT_SECURITY_DESC_TYPE_RESERVED 0x41
+#define XBOX_LED_ID 0x01
 
 // Check if the interface is ready to use
 bool tud_xinput_n_ready(uint8_t itf);
@@ -63,4 +64,5 @@ bool xinputd_control_complete(uint8_t rhport,
 bool xinputd_xfer_cb(uint8_t rhport, uint8_t ep_addr, xfer_result_t event,
                      uint32_t xferred_bytes);
 
+uint8_t playerLedValue(void);
 #endif /* _TUSB_XINPUT_DEVICE_H_ */

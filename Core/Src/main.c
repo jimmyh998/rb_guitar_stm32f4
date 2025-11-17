@@ -17,6 +17,7 @@
   */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
+#include <rb_guitar.h>
 #include <usb_device.h>
 #include "main.h"
 
@@ -25,7 +26,6 @@
 #include "tusb.h"
 #include "device/usbd_pvt.h"
 #include "xinput_device.h"
-#include "rb_input.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -47,7 +47,7 @@
 PCD_HandleTypeDef hpcd_USB_OTG_FS;
 
 /* USER CODE BEGIN PV */
-
+uint8_t lastPlayer = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -119,6 +119,10 @@ int main(void)
 	  txData.buttons |= !HAL_GPIO_ReadPin(BTN_A_GPIO_Port, BTN_A_Pin) << XBOX_A; // A Button
 	  tud_task();
 	  sendReportData();
+	  if(lastPlayer != playerLedValue()){
+		  //printf("%d\n", playerLedValue());
+		  lastPlayer = playerLedValue();
+	  }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
